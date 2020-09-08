@@ -19,6 +19,7 @@ body {
 
 .btn-row {
     display: flex;
+    align-items: center;
 }
 
 .btn {
@@ -61,4 +62,12 @@ flex-wrap: wrap;
 
 .headline {
     width: 100%;
+}
+
+.headline {
+    width: 80%;
+}
+
+h5 {
+    color: rgba(255, 255, 255, 0.774);
 }
