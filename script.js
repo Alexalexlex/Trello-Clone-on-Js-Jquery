@@ -2,9 +2,18 @@ $(document).ready(() => {
 
 let arrayTask = [];
 let cols = new Map ();
-console.log(cols);
+
+// Drag N Drop
+const drag = function() {
+  $( function() {
+    $( '.canban ' ).sortable({
+      connectWith: ".canban"
+    }).disableSelection();
+  } );
+  }
 
 // render cols and task
+
 const render = function() {
   let strcol = ``;
   for(let headline of cols.keys()){
@@ -21,6 +30,7 @@ const render = function() {
 </div>`
     }
     $('.list-field').html(strcol);
+    drag()
 }
 
 // Add new board
@@ -38,13 +48,7 @@ const addBoard = function(key, headline) {
 
 addBoard('My First Board');
 
-// Drag N Drop
 
-$( function() {
-  $( ".canban" ).sortable({
-    connectWith: ".canban"
-  }).disableSelection();
-} );
 
 $(document).on('mousedown', '.canban li', function() {
 $(this).addClass("rotate");
@@ -71,8 +75,6 @@ const addTask = function(key, headline) {
     id: Date.now(),
   };
   cols.set(headline,[...cols.get(headline), newTask])
-  console.log(cols);
-  console.log(key)
 }
 
 // click on Add Task
@@ -89,10 +91,20 @@ $(document).on('click', '.mybtn', function() {
 });
 
 $(document).on('blur', '.headline', function back() {
-  addTask(this.value, fuck);
-  $(this).replaceWith(`<span>${this.value}</span>`);
-  console.log(this.value)
-  render();
+  if (this.value === '') {
+    $('.headline').remove();
+    render();
+  } else {
+    this.value = this.value.replace(/ +/g, ' ').trim();
+    this.value = this.value.replace(/&/g, '&amp');
+    this.value = this.value.replace(/</g, '&lt');
+    this.value = this.value.replace(/>/g, '&gt');
+    this.value = this.value.replace(/"/g, '&quot');
+    this.value = this.value.replace(/`/g, '&#x60');
+    addTask(this.value, fuck);
+    $(this).replaceWith(`<span>${this.value}</span>`);
+    render();
+  }
 });
 
 $(document).on('keydown', '.headline', function enter(event) {
