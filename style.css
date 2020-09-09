@@ -64,8 +64,13 @@ flex-wrap: wrap;
     width: 100%;
 }
 
-.headline {
-    width: 80%;
+.headline-col {
+    width: 20%;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+    margin-left: 1em;
+    visibility: hidden;
 }
 
 h5 {

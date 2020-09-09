@@ -1,31 +1,42 @@
 $(document).ready(() => {
 
-$('.list-field').html(`<div class="box">
-<h5>My first board</h5>
-<ul class="canban list-group">
-</ul>
-<button type="button" class="mybtn list-group-item">Add new card</button>
-</div>`)
+let arrayTask = [];
+let cols = new Map ();
+console.log(cols);
 
-const arrayTask = [];
-const cols = new Map ();
-
-// render cols
+// render cols and task
 const render = function() {
-  str = ``;
+  let strcol = ``;
   for(let headline of cols.keys()){
-    str+= `<div class="box">
+    let str = '';
+    cols.get(headline).forEach((item) => {
+    str += `<li id=${item.id} class="list-group-item">${item.headline}</li>`;
+  })
+    strcol+= `<div class="box">
     <h5>${headline}</h5>
-    <ul class="canban list-group">
+    <ul id="${headline}" class="canban list-group">
+    ${str}
     </ul>
     <button type="button" class="mybtn list-group-item">Add new card</button>
 </div>`
     }
-    $('.list-field').html(str);
-    console.log(cols);
+    $('.list-field').html(strcol);
 }
 
-// render task !!!!
+// Add new board
+
+const addBoard = function(key, headline) {
+  key = key.replace(/ +/g, ' ').trim();
+  key = key.replace(/&/g, '&amp');
+  key = key.replace(/</g, '&lt');
+  key = key.replace(/>/g, '&gt');
+  key = key.replace(/"/g, '&quot');
+  key = key.replace(/`/g, '&#x60');
+  cols.set(key, []);
+  render()
+}
+
+addBoard('My First Board');
 
 // Drag N Drop
 
@@ -43,28 +54,45 @@ $(document).on('mouseup', '.canban li', function() {
   $(this).removeClass("rotate");
   });
 
-// Add Task in Board
+// Add Task
+
+const addTask = function(key, headline) {
+  key = key.replace(/ +/g, ' ').trim();
+  key = key.replace(/&/g, '&amp');
+  key = key.replace(/</g, '&lt');
+  key = key.replace(/>/g, '&gt');
+  key = key.replace(/"/g, '&quot');
+  key = key.replace(/`/g, '&#x60');
+
+  const newTask = {
+    headline: key,
+    description: '',
+    isChecked: false,
+    id: Date.now(),
+  };
+  cols.set(headline,[...cols.get(headline), newTask])
+  console.log(cols);
+  console.log(key)
+}
+
+// click on Add Task
+let fuck = '';
 
 $(document).on('click', '.mybtn', function() {
   let str = '';
   arrayTask.forEach((item) => {
     str += `<li id=${item.id} class="list-group-item">${item.headline}</li>`;
   });
-  $(this.previousElementSibling).html(str+`<li class="list-group-item"><input class="headline"></input></li>`);
+  $(this.previousElementSibling).append(str+`<li class="list-group-item"><input class="headline"></input></li>`);
   $('.headline').focus();
+  fuck = $(this.previousElementSibling).attr('id');
 });
 
 $(document).on('blur', '.headline', function back() {
+  addTask(this.value, fuck);
   $(this).replaceWith(`<span>${this.value}</span>`);
-  const newTask = {
-    headline: this.value,
-    description: '',
-    isChecked: false,
-    id: Date.now(),
-  };
-
-  arrayTask.push(newTask);
-  console.log(arrayTask);
+  console.log(this.value)
+  render();
 });
 
 $(document).on('keydown', '.headline', function enter(event) {
@@ -76,23 +104,30 @@ $(document).on('keydown', '.headline', function enter(event) {
 // Add Board
 
 $(document).on('click', '#new-list', function() {
-//   $('.list-field').html(`<div class="box">
-//   <input class=""headline></input>
-// </div>`)
-// $('.headline').focus();
-
-$('.list-field').html(`<div class="box">
-<input class="headline-col" >
-<ul class="canban list-group">
-</ul>
-<button type="button" class="mybtn list-group-item">Add new card</button>
-</div>`)
+$(".headline-col").css("visibility", "visible");
+$('.headline-col').focus();
 });
 
 $(document).on('blur', '.headline-col', function back() {
-  $(this).replaceWith(`<h5>${this.value}</h5>`);
-  cols.set(this.value, []);
-  render()
+  if (this.value === '') {
+    $(".headline-col").css("visibility", "hidden");
+  } else {
+    $(".headline-col").css("visibility", "hidden");
+    addBoard(this.value);
+    this.value = '';
+  }
+});
+
+$(document).on('keydown', '.headline-col', function enter(event) {
+  if (event.which === 13) {
+    if (this.value === '') {
+      $('.headline-col').focus();
+  } else {
+    $(".headline-col").css("visibility", "hidden");
+    addBoard(this.value);
+    this.value = '';
+  }
+  }
 });
 
 });
