@@ -13,17 +13,17 @@ $(document).ready(() => {
   }
 
   // render cols and task
-
+  
   const render = function () {
     let strcol = ``;
     for (let headline of cols.keys()) {
       let str = '';
       cols.get(headline).forEach((item) => {
-        str += `<li id=${item.id} class="list-group-item">${item.headline}</li>`;
+        str += `<li id=${item.id} class="list-group-item" data-toggle="modal" data-target="#exampleModalCenter">${item.headline}</li>`;
       })
       strcol += `<div class="box">
     <div class="card-opt">
-                    <h5>${headline}</h5>
+                    <h5 class="title-card">${headline}</h5>
                     <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="sr-only">Toggle Dropdown</span>
@@ -45,16 +45,24 @@ $(document).ready(() => {
     drag()
   }
 
+  // Render Modal
+  const renderModal = function() {
+
+  }
+
   // Add new board
 
-  const addBoard = function (key, headline) {
+  const addBoard = function (key, array) {
     key = key.replace(/ +/g, ' ').trim();
     key = key.replace(/&/g, '&amp');
     key = key.replace(/</g, '&lt');
     key = key.replace(/>/g, '&gt');
     key = key.replace(/"/g, '&quot');
     key = key.replace(/`/g, '&#x60');
-    cols.set(key, []);
+    if (array === undefined){
+      array = [];
+    }
+    cols.set(key, array);
     render()
   }
 
@@ -64,12 +72,10 @@ $(document).ready(() => {
 
   $(document).on('mousedown', '.canban li', function () {
     $(this).addClass("rotate");
-    console.log($(this.parentElement));
   });
 
   $(document).on('mouseup', function () {
     $('.canban li').removeClass("rotate");
-    console.log($(this.parentElement));
   });
 
   // Add Task
@@ -84,7 +90,8 @@ $(document).ready(() => {
 
     const newTask = {
       headline: key,
-      description: '',
+      description: '...',
+      comments: [],
       isChecked: false,
       id: Date.now(),
     };
@@ -139,7 +146,8 @@ $(document).ready(() => {
       $(".headline-col").css("visibility", "hidden");
     } else {
       $(".headline-col").css("visibility", "hidden");
-      addBoard(this.value);
+      addBoard(this.value, copyItems);
+      copyItems = [];
       this.value = '';
     }
   });
@@ -150,8 +158,9 @@ $(document).ready(() => {
         $('.headline-col').focus();
       } else {
         $(".headline-col").css("visibility", "hidden");
-        addBoard(this.value);
+        addBoard(this.value, copyItems);
         this.value = '';
+        copyItems = []
       }
     }
   });
@@ -171,10 +180,26 @@ $(document).ready(() => {
   });
 
   // Copy All Cards
-
+ let copyItems = [];
   $(document).on('click', '.copy-cards', function () {
-    
+    $(".headline-col").css("visibility", "visible");
+    $('.headline-col').focus();
+    copyItems = cols.get($(this).attr('id'));
   });
 
+  // Modal window
+  
+
+  $(document).on('click', '.canban li', function() {
+    // console.log($(this).attr('id'))
+    // console.log($(this.parentElement).attr('id'))
+    // console.log(cols.get($(this.parentElement).attr('id')))
+    cols.get($(this.parentElement).attr('id')).forEach((item) => {
+      if (Number($(this).attr('id')) === item.id){
+        
+      }
+    });
+    
+  })
 
 });

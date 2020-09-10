@@ -72,7 +72,7 @@ flex-wrap: wrap;
     visibility: hidden;
 }
 
-h5 {
+.title-card {
     color: rgba(255, 255, 255, 0.774);
 }
 
