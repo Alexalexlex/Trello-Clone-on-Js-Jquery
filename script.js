@@ -60,7 +60,7 @@ $(document).ready(() => {
             <div class="card borderpopup">
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <span><!--Discription here--> Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus repudiandae repellat laboriosam beatae officia sequi, atque vitae repellendus distinctio minima recusandae ab labore necessitatibus. Iure quae repellendus reprehenderit libero.</span>
+                        <span>${item.description}</span>
                         <div class="form-group">
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                           </div>
@@ -71,6 +71,7 @@ $(document).ready(() => {
         </div>
         <div class="comments">
             <h6>Comments:</h6>
+            <span>    </span>
         </div>
     </div>
   </div>`
@@ -253,6 +254,6 @@ $(document).ready(() => {
         }
   })
 
-  
+
 
 });
