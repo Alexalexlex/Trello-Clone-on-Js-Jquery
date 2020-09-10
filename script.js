@@ -14,7 +14,10 @@ $(document).ready(() => {
 
   // render cols and task
   
-  const render = function () {
+  const render = function (popUp) {
+    if (popUp === undefined) {
+      popUp = ''
+    }
     let strcol = ``;
     for (let headline of cols.keys()) {
       let str = '';
@@ -41,13 +44,37 @@ $(document).ready(() => {
     <button type="button" class="mybtn list-group-item">Add new card</button>
 </div>`
     }
-    $('.list-field').html(strcol);
+    $('.list-field').html(strcol+popUp);
     drag()
   }
 
-  // Render Modal
-  const renderModal = function() {
-
+  // PopUp
+  const renderModal = function(item) {
+    let popUp = '';
+    popUp = `<div class="popupfon">
+    <div class="popup">
+        <h5>${item.headline}</h5>
+        <div class="discription">
+            <h6 data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Discription:</h6>
+            <div id="accordion">
+            <div class="card borderpopup">
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <span><!--Discription here--> Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus repudiandae repellat laboriosam beatae officia sequi, atque vitae repellendus distinctio minima recusandae ab labore necessitatibus. Iure quae repellendus reprehenderit libero.</span>
+                        <div class="form-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                          </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="comments">
+            <h6>Comments:</h6>
+        </div>
+    </div>
+  </div>`
+  render(popUp);
   }
 
   // Add new board
@@ -110,6 +137,7 @@ $(document).ready(() => {
     $('.headline').focus();
     fuck = $(this.previousElementSibling).attr('id');
   });
+
 
   $(document).on('blur', '.headline', function back() {
     if (this.value === '') {
@@ -187,19 +215,44 @@ $(document).ready(() => {
     copyItems = cols.get($(this).attr('id'));
   });
 
-  // Modal window
+  // PopUp click
   
 
   $(document).on('click', '.canban li', function() {
-    // console.log($(this).attr('id'))
-    // console.log($(this.parentElement).attr('id'))
-    // console.log(cols.get($(this.parentElement).attr('id')))
+
+    $('.popupfon').show()
+    $('.popup').show()
+
+
+    //находим объект карточки для рендера PopUp
     cols.get($(this.parentElement).attr('id')).forEach((item) => {
       if (Number($(this).attr('id')) === item.id){
-        
+        renderModal(item)
       }
     });
-    
+
+    //сохранение позиции перетаскивания
+
+    // let elemLength;
+    // $(this.parentElement).each(function(index) {
+    //   console.log($(this).attr('id'));
+    //   console.log($(this).children('ul>li').length)
+    //   elemLength = $(this).children('ul>li').length;
+    // })
+    // if (cols.get($(this).attr('id')) !== elemLength) {
+      
+    // } 
   })
+
+  $(document).mouseup(function(e) {
+    let div = $(".popup");
+		if (!div.is(e.target)
+		    && div.has(e.target).length === 0) {
+      $('.popupfon').hide(); 
+      $('.popup').hide();
+        }
+  })
+
+  
 
 });

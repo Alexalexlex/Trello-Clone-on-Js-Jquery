@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 html {
@@ -12,7 +13,7 @@ body {
     background-repeat: no-repeat;
 }
 
-.main {
+#main {
     width: 100%;
     height: 100%;
 }
@@ -93,4 +94,68 @@ flex-wrap: wrap;
 .btn-info {
     width: 1.5em;
     height: 1.5em;
+}
+
+.popup {
+    width: 30%;
+    height: auto;
+    background-color: transparent;
+    border-radius: 10px;
+    z-index: 3;
+    top:10%;
+    left: 30%;
+    position: fixed;
+}
+
+.popup h5 {
+    border-radius: inherit;
+    padding: 1em;
+    background-color: #fafafa;
+    color: rgba(0, 0, 0, 0.685);
+}
+
+.discription {
+    width: 100%;
+    height: 60%;
+    margin: auto;
+    background-color: #fafafa;
+    border-radius: inherit;
+}
+
+.comments {
+    margin-top: 1em;
+    width: 100%;
+    height: 30%;
+    background-color: #fafafa;
+    border-radius: inherit;
+}
+
+.comments h6, .discription h6 {
+    padding: 1em;
+    color: rgba(0, 0, 0, 0.685);
+}
+
+.borderpopup {
+    border:0!important;
+}
+
+.form-control {
+    resize: none;
+}
+
+.form-group {
+    display: none;
+}
+
+.card-body {
+    cursor: pointer;
+}
+
+.popupfon {
+    /* display: none; */
+    background-color: rgba(0, 0, 0, 0.336);
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
 }
