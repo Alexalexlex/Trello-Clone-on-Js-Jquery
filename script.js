@@ -108,6 +108,16 @@ $(document).ready(() => {
 
   $(document).on('mousedown', '.canban li', function () {
     $(this).addClass("rotate");
+    let elemLength;
+    $(this.parentElement).each(function(index) {
+      console.log($(this).attr('id'));
+      console.log('DOM elems: ', $(this).children('ul>li').length)
+      elemLength = $(this).children('ul>li').length;
+    })
+    console.log("In obj elems", cols.get($(this.parentElement).attr('id')).length)
+    if (cols.get($(this.parentElement).attr('id')).length < elemLength) {
+
+    } 
   });
 
   $(document).on('mouseup', function () {
@@ -242,18 +252,6 @@ $(document).ready(() => {
         renderModal(item)
       }
     });
-
-    //сохранение позиции перетаскивания
-
-    // let elemLength;
-    // $(this.parentElement).each(function(index) {
-    //   console.log($(this).attr('id'));
-    //   console.log($(this).children('ul>li').length)
-    //   elemLength = $(this).children('ul>li').length;
-    // })
-    // if (cols.get($(this).attr('id')) !== elemLength) {
-      
-    // } 
   })
 
   $(document).mouseup(function(e) {
@@ -268,7 +266,7 @@ $(document).ready(() => {
 // PopUp Description
 
   $(document).on('click', '.discription-text', function() {
-    $(this).replaceWith('<textarea class="discription-area">')
+    $(this).replaceWith(`<textarea class="discription-area">${$(this).text()}</textarea>`)
     $('.discription-area').focus();
   })
 
@@ -284,11 +282,15 @@ $(document).ready(() => {
 // PopUp NameChange
 
 $(document).on('click', '.popup h5', function() {
-  $(".popup h5").replaceWith('<input class="headline-inp">')
+  $(".popup h5").replaceWith(`<input class="headline-inp"></input>`)
+  $('.headline-inp').val($(this).text())
   $(".headline-inp").focus()
 })
 
 $(document).on('blur', '.headline-inp', function() {
+  if (this.value === '') {
+    alert('Введите значение')
+  } else {
   $(this).replaceWith(`<h5>${this.value}</h5>`)
   cols.get(popUpName).forEach((item) =>{
     if (thisCardId === item.id){
@@ -296,6 +298,7 @@ $(document).on('blur', '.headline-inp', function() {
     renderModal(item)
     }
   })
+}
 })
 
 // Popup Comments
@@ -323,5 +326,7 @@ $(document).on('click', '.deltask', function() {
   cols.set(popUpName,newArr);
   render()
 })
+
+
 
 });
