@@ -51,9 +51,16 @@ $(document).ready(() => {
   // PopUp
   const renderModal = function(item) {
     let popUp = '';
+    let comments = '';
+    item.comments.forEach((text) => {
+      comments+=`<div class=comment-text>${text}</div>`
+    })
     popUp = `<div class="popupfon">
     <div class="popup">
+    <div class="popupHeader">
         <h5>${item.headline}</h5>
+        <button type="button" class="btn btn-outline-danger deltask">Delete Task</button>
+        </div>
         <div class="discription">
             <h6 data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Discription:</h6>
             <div id="accordion">
@@ -71,7 +78,8 @@ $(document).ready(() => {
         </div>
         <div class="comments">
             <h6>Comments:</h6>
-            <span>    </span>
+            ${comments}
+            <textarea class="comment-area" placeholder="Comment this"></textarea>
         </div>
     </div>
   </div>`
@@ -288,6 +296,32 @@ $(document).on('blur', '.headline-inp', function() {
     renderModal(item)
     }
   })
+})
+
+// Popup Comments
+
+$(document).on('keydown', '.comment-area', function enter(event) {
+  if (event.which === 13) {
+    cols.get(popUpName).forEach((item) =>{
+      if (thisCardId === item.id){
+      item.comments.push(this.value);
+      console.log(cols.get(popUpName))
+      renderModal(item)
+      $('.comment-area').focus()
+      }
+    })
+  }
+})
+
+
+// PopUp Delete Task
+
+$(document).on('click', '.deltask', function() {
+  let newArr = cols.get(popUpName).filter((item) => {
+    return item.id !== thisCardId;
+  })
+  cols.set(popUpName,newArr);
+  render()
 })
 
 });
