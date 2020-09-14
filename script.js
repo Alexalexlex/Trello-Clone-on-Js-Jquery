@@ -14,17 +14,17 @@ $(document).ready(() => {
   // Save All 
   let colsNow;
   const saveAll = function() {
-    localStorage.setItem("save",JSON.stringify(Array.from(cols.entries())));
     colsNow =new Map(JSON.parse(localStorage.getItem('save')));
-    
+    console.log("saveAll -> colsNow", colsNow)
   }
 
-    
+  saveAll()
 
 
   // render cols and task
   
   const render = function (popUp) {
+    localStorage.setItem("save",JSON.stringify(Array.from(cols.entries())));
     if (popUp === undefined) {
       popUp = ''
     }
@@ -115,6 +115,11 @@ $(document).ready(() => {
   }
 
   addBoard('My First Board');
+  // Add localStorage items
+  
+  for (let key of colsNow.keys()) {
+    addBoard(key,colsNow.get(key))
+  }
 
  // Transform task on click
 
