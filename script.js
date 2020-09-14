@@ -2,7 +2,6 @@ $(document).ready(() => {
 
   let arrayTask = [];
   let cols = new Map();
-
   // Drag N Drop
   const drag = function () {
     $(function () {
@@ -11,6 +10,17 @@ $(document).ready(() => {
       }).disableSelection();
     });
   }
+
+  // Save All 
+  let colsNow;
+  const saveAll = function() {
+    localStorage.setItem("save",JSON.stringify(Array.from(cols.entries())));
+    colsNow =new Map(JSON.parse(localStorage.getItem('save')));
+    
+  }
+
+    
+
 
   // render cols and task
   
@@ -47,6 +57,8 @@ $(document).ready(() => {
     $('.list-field').html(strcol+popUp);
     drag()
   }
+
+  render()
 
   // PopUp
   const renderModal = function(item) {
