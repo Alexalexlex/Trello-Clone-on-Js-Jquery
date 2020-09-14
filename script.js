@@ -60,7 +60,7 @@ $(document).ready(() => {
             <div class="card borderpopup">
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <span>${item.description}</span>
+                        <div class="discription-text">${item.description}</div>
                         <div class="form-group">
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                           </div>
@@ -218,7 +218,8 @@ $(document).ready(() => {
 
   // PopUp click
   
-
+  let popUpName = '';
+  let thisCardId = null;
   $(document).on('click', '.canban li', function() {
 
     $('.popupfon').show()
@@ -228,6 +229,8 @@ $(document).ready(() => {
     //находим объект карточки для рендера PopUp
     cols.get($(this.parentElement).attr('id')).forEach((item) => {
       if (Number($(this).attr('id')) === item.id){
+        thisCardId = Number($(this).attr('id'));
+        popUpName = $(this.parentElement).attr('id');
         renderModal(item)
       }
     });
@@ -254,6 +257,26 @@ $(document).ready(() => {
         }
   })
 
+// PopUp Description
 
+  $(document).on('click', '.discription-text', function() {
+    $(this).replaceWith('<textarea class="discription-area">')
+    $('.discription-area').focus();
+  })
+
+  $(document).on('blur', '.discription-area', function() {
+    $(this).replaceWith(`<div class="discription-text">${this.value}</div>`)
+    cols.get(popUpName).forEach((item) =>{
+      if (thisCardId === item.id){
+      item.description = this.value;
+      console.log("cols.get(popUpName)", cols.get(popUpName))
+      }
+    })
+  })
+
+// PopUp NameChange
+$(document).on('click', '.discription-text', function() {
+  
+})
 
 });

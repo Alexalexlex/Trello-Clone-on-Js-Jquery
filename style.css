@@ -97,7 +97,7 @@ flex-wrap: wrap;
 }
 
 .popup {
-    width: 30%;
+    width: 40%;
     height: auto;
     background-color: transparent;
     border-radius: 10px;
@@ -158,4 +158,11 @@ flex-wrap: wrap;
     height: 100vh;
     position: absolute;
     top: 0;
+}
+
+.discription-area {
+ width: 100%;
+ border: none;
+ outline: none;
+ resize: none;
 }
