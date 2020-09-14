@@ -166,3 +166,15 @@ flex-wrap: wrap;
  outline: none;
  resize: none;
 }
+
+.headline-inp {
+    width: 100%;
+    border-radius: inherit;
+    padding: 1em;
+    background-color: #fafafa;
+    color: rgba(0, 0, 0, 0.685);
+    border: none;
+    margin-bottom: 1em;
+    outline: none;
+
+}

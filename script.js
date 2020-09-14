@@ -269,14 +269,25 @@ $(document).ready(() => {
     cols.get(popUpName).forEach((item) =>{
       if (thisCardId === item.id){
       item.description = this.value;
-      console.log("cols.get(popUpName)", cols.get(popUpName))
       }
     })
   })
 
 // PopUp NameChange
-$(document).on('click', '.discription-text', function() {
-  
+
+$(document).on('click', '.popup h5', function() {
+  $(".popup h5").replaceWith('<input class="headline-inp">')
+  $(".headline-inp").focus()
+})
+
+$(document).on('blur', '.headline-inp', function() {
+  $(this).replaceWith(`<h5>${this.value}</h5>`)
+  cols.get(popUpName).forEach((item) =>{
+    if (thisCardId === item.id){
+    item.headline = this.value;
+    renderModal(item)
+    }
+  })
 })
 
 });
