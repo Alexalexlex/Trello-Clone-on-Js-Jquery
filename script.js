@@ -13,8 +13,13 @@ $(document).ready(() => {
 
   // Save All 
   let colsNow;
+<<<<<<< HEAD
   const saveAll = function () {
     colsNow = new Map(JSON.parse(localStorage.getItem('save')));
+=======
+  const saveAll = function() {
+    colsNow =new Map(JSON.parse(localStorage.getItem('save')));
+>>>>>>> 3dff52943fb3a543df678fa799e0e151408c5a9b
     console.log("saveAll -> colsNow", colsNow)
   }
 
@@ -24,7 +29,11 @@ $(document).ready(() => {
   // render cols and task
 
   const render = function (popUp) {
+<<<<<<< HEAD
     localStorage.setItem("save", JSON.stringify(Array.from(cols.entries())));
+=======
+    localStorage.setItem("save",JSON.stringify(Array.from(cols.entries())));
+>>>>>>> 3dff52943fb3a543df678fa799e0e151408c5a9b
     if (popUp === undefined) {
       popUp = ''
     }
@@ -116,9 +125,9 @@ $(document).ready(() => {
 
   addBoard('My First Board');
   // Add localStorage items
-
+  
   for (let key of colsNow.keys()) {
-    addBoard(key, colsNow.get(key))
+    addBoard(key,colsNow.get(key))
   }
 
   // Transform task on click
