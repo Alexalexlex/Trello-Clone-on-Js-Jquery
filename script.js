@@ -333,7 +333,6 @@ $(document).on('keydown', '.comment-area', function enter(event) {
   }
 })
 
-
 // PopUp Delete Task
 
 $(document).on('click', '.deltask', function() {
@@ -343,7 +342,5 @@ $(document).on('click', '.deltask', function() {
   cols.set(popUpName,newArr);
   render()
 })
-
-
 
 });
