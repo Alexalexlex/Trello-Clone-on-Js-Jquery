@@ -2,17 +2,47 @@ $(document).ready(() => {
 
   let arrayTask = [];
   let cols = new Map();
+
+  let keyFirst = '';
+  let keySecond = '';
+  let taskOn = 0;
+  let delItem = {};
+  let keySecondChildren = '';
+
   // Drag N Drop
   const drag = function () {
-    $(function (event) {
-      console.log(event.target)
+    
+    $(function () {
       $('.canban').sortable({
         connectWith: ".canban",
         update:function(event,ui){
-          console.log($(ui.item).attr('id'))
+          taskOn = $(ui.item).attr('id')
+          keyFirst = $(ui.sender).attr('id')
+          if(cols.get(keyFirst)!==undefined){
+            let newArray = cols.get(keyFirst).filter((item) =>{
+              if(item.id===Number(taskOn)){
+                delItem = item;
+              }
+              return item.id !== Number(taskOn)
+            })
+            cols.set(keyFirst, newArray)
+            
+            keySecondChildren.each(function (index) {
+              if (Number($(this).attr('id'))===delItem.id){
+                cols.get(keySecond).splice(index, 0, delItem)              
+              }
+            })
+
+          }          
+        },
+        receive:function(){
+          keySecond = $(this).attr('id')
+          keySecondChildren = $(this.children)
         }
       }).disableSelection();
     });
+
+    
   }
 
   // LocalStorage 
@@ -125,36 +155,15 @@ $(document).ready(() => {
   }
 
   // Transform task on click
-  let arrWithDelete = [];
-  keyDeleteArr = '';
-  let delItem = {};
 
   $(document).on('mousedown', '.canban li', function (event) {
     $(this).addClass("rotate");
-    // cols.get($(this).attr('id')).forEach((item) => {
-    //   if (item.id === Number($(this).attr('id'))) {
-    //     delItem = item;
-    //     arrWithDelete = cols.get($(this).attr('id')).filter((item) => {
-    //       return item.id !== delItem.id;
-    //     })
-    //     }
-    //   })
+    
   });
 
   $(document).on('mouseup',function (event) {
     $('.canban li').removeClass("rotate");
   });
-
-  // const findItem = function () {
-  //   if (cols.get(keyDeleteArr).length < elemLength) {
-  //     $("li").each(function (index) {
-  //       if (keyLi === delItem.id) {
-  //         console.log($(this.parentElement).attr('id'), index)
-  //         cols.get($(this.parentElement).attr('id')).splice(index, 0, delItem)
-  //       };
-  //     })
-  //   }
-  // }
 
 
   // Add Task
