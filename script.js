@@ -4,18 +4,21 @@ $(document).ready(() => {
   let cols = new Map();
   // Drag N Drop
   const drag = function () {
-    $(function () {
-      $('.canban ').sortable({
-        connectWith: ".canban"
+    $(function (event) {
+      console.log(event.target)
+      $('.canban').sortable({
+        connectWith: ".canban",
+        update:function(event,ui){
+          console.log($(ui.item).attr('id'))
+        }
       }).disableSelection();
     });
   }
 
-  // Save All 
+  // LocalStorage 
   let colsNow;
   const saveAll = function () {
     colsNow = new Map(JSON.parse(localStorage.getItem('save')));
-    console.log("saveAll -> colsNow", colsNow)
   }
 
   saveAll()
@@ -116,30 +119,43 @@ $(document).ready(() => {
 
   addBoard('My First Board');
   // Add localStorage items
-  
+
   for (let key of colsNow.keys()) {
-    addBoard(key,colsNow.get(key))
+    addBoard(key, colsNow.get(key))
   }
 
   // Transform task on click
+  let arrWithDelete = [];
+  keyDeleteArr = '';
+  let delItem = {};
 
-  $(document).on('mousedown', '.canban li', function () {
+  $(document).on('mousedown', '.canban li', function (event) {
     $(this).addClass("rotate");
-    let elemLength;
-    $(this.parentElement).each(function (index) {
-      console.log($(this).attr('id'));
-      console.log('DOM elems: ', $(this).children('ul>li').length)
-      elemLength = $(this).children('ul>li').length;
-    })
-    console.log("In obj elems", cols.get($(this.parentElement).attr('id')).length)
-    if (cols.get($(this.parentElement).attr('id')).length < elemLength) {
-
-    }
+    // cols.get($(this).attr('id')).forEach((item) => {
+    //   if (item.id === Number($(this).attr('id'))) {
+    //     delItem = item;
+    //     arrWithDelete = cols.get($(this).attr('id')).filter((item) => {
+    //       return item.id !== delItem.id;
+    //     })
+    //     }
+    //   })
   });
 
-  $(document).on('mouseup', function () {
+  $(document).on('mouseup',function (event) {
     $('.canban li').removeClass("rotate");
   });
+
+  // const findItem = function () {
+  //   if (cols.get(keyDeleteArr).length < elemLength) {
+  //     $("li").each(function (index) {
+  //       if (keyLi === delItem.id) {
+  //         console.log($(this.parentElement).attr('id'), index)
+  //         cols.get($(this.parentElement).attr('id')).splice(index, 0, delItem)
+  //       };
+  //     })
+  //   }
+  // }
+
 
   // Add Task
 
@@ -273,8 +289,8 @@ $(document).ready(() => {
 
   $(document).mouseup(function (e) {
     let div = $(".popup");
-    if (!div.is(e.target)
-      && div.has(e.target).length === 0) {
+    if (!div.is(e.target) &&
+      div.has(e.target).length === 0) {
       $('.popupfon').hide();
       $('.popup').hide();
     }
@@ -325,7 +341,6 @@ $(document).ready(() => {
       cols.get(popUpName).forEach((item) => {
         if (thisCardId === item.id) {
           item.comments.push(this.value);
-          console.log(cols.get(popUpName))
           renderModal(item)
           $('.comment-area').focus()
         }
