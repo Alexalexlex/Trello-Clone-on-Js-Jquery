@@ -13,8 +13,8 @@ $(document).ready(() => {
 
   // Save All 
   let colsNow;
-  const saveAll = function() {
-    colsNow =new Map(JSON.parse(localStorage.getItem('save')));
+  const saveAll = function () {
+    colsNow = new Map(JSON.parse(localStorage.getItem('save')));
     console.log("saveAll -> colsNow", colsNow)
   }
 
@@ -22,9 +22,9 @@ $(document).ready(() => {
 
 
   // render cols and task
-  
+
   const render = function (popUp) {
-    localStorage.setItem("save",JSON.stringify(Array.from(cols.entries())));
+    localStorage.setItem("save", JSON.stringify(Array.from(cols.entries())));
     if (popUp === undefined) {
       popUp = ''
     }
@@ -54,18 +54,18 @@ $(document).ready(() => {
     <button type="button" class="mybtn list-group-item">Add new card</button>
 </div>`
     }
-    $('.list-field').html(strcol+popUp);
+    $('.list-field').html(strcol + popUp);
     drag()
   }
 
   render()
 
   // PopUp
-  const renderModal = function(item) {
+  const renderModal = function (item) {
     let popUp = '';
     let comments = '';
     item.comments.forEach((text) => {
-      comments+=`<div class=comment-text>${text}</div>`
+      comments += `<div class=comment-text>${text}</div>`
     })
     popUp = `<div class="popupfon">
     <div class="popup">
@@ -95,7 +95,7 @@ $(document).ready(() => {
         </div>
     </div>
   </div>`
-  render(popUp);
+    render(popUp);
   }
 
   // Add new board
@@ -107,7 +107,7 @@ $(document).ready(() => {
     key = key.replace(/>/g, '&gt');
     key = key.replace(/"/g, '&quot');
     key = key.replace(/`/g, '&#x60');
-    if (array === undefined){
+    if (array === undefined) {
       array = [];
     }
     cols.set(key, array);
@@ -121,12 +121,12 @@ $(document).ready(() => {
     addBoard(key,colsNow.get(key))
   }
 
- // Transform task on click
+  // Transform task on click
 
   $(document).on('mousedown', '.canban li', function () {
     $(this).addClass("rotate");
     let elemLength;
-    $(this.parentElement).each(function(index) {
+    $(this.parentElement).each(function (index) {
       console.log($(this).attr('id'));
       console.log('DOM elems: ', $(this).children('ul>li').length)
       elemLength = $(this).children('ul>li').length;
@@ -134,7 +134,7 @@ $(document).ready(() => {
     console.log("In obj elems", cols.get($(this.parentElement).attr('id')).length)
     if (cols.get($(this.parentElement).attr('id')).length < elemLength) {
 
-    } 
+    }
   });
 
   $(document).on('mouseup', function () {
@@ -244,7 +244,7 @@ $(document).ready(() => {
   });
 
   // Copy All Cards
- let copyItems = [];
+  let copyItems = [];
   $(document).on('click', '.copy-cards', function () {
     $(".headline-col").css("visibility", "visible");
     $('.headline-col').focus();
@@ -252,10 +252,10 @@ $(document).ready(() => {
   });
 
   // PopUp click
-  
+
   let popUpName = '';
   let thisCardId = null;
-  $(document).on('click', '.canban li', function() {
+  $(document).on('click', '.canban li', function () {
 
     $('.popupfon').show()
     $('.popup').show()
@@ -263,7 +263,7 @@ $(document).ready(() => {
 
     //находим объект карточки для рендера PopUp
     cols.get($(this.parentElement).attr('id')).forEach((item) => {
-      if (Number($(this).attr('id')) === item.id){
+      if (Number($(this).attr('id')) === item.id) {
         thisCardId = Number($(this).attr('id'));
         popUpName = $(this.parentElement).attr('id');
         renderModal(item)
@@ -271,76 +271,77 @@ $(document).ready(() => {
     });
   })
 
-  $(document).mouseup(function(e) {
+  $(document).mouseup(function (e) {
     let div = $(".popup");
-		if (!div.is(e.target)
-		    && div.has(e.target).length === 0) {
-      $('.popupfon').hide(); 
+    if (!div.is(e.target)
+      && div.has(e.target).length === 0) {
+      $('.popupfon').hide();
       $('.popup').hide();
-        }
+    }
   })
 
-// PopUp Description
+  // PopUp Description
 
-  $(document).on('click', '.discription-text', function() {
+  $(document).on('click', '.discription-text', function () {
     $(this).replaceWith(`<textarea class="discription-area">${$(this).text()}</textarea>`)
     $('.discription-area').focus();
   })
 
-  $(document).on('blur', '.discription-area', function() {
+  $(document).on('blur', '.discription-area', function () {
     $(this).replaceWith(`<div class="discription-text">${this.value}</div>`)
-    cols.get(popUpName).forEach((item) =>{
-      if (thisCardId === item.id){
-      item.description = this.value;
+    cols.get(popUpName).forEach((item) => {
+      if (thisCardId === item.id) {
+        item.description = this.value;
       }
     })
   })
 
-// PopUp NameChange
+  // PopUp NameChange
 
-$(document).on('click', '.popup h5', function() {
-  $(".popup h5").replaceWith(`<input class="headline-inp"></input>`)
-  $('.headline-inp').val($(this).text())
-  $(".headline-inp").focus()
-})
+  $(document).on('click', '.popup h5', function () {
+    $(".popup h5").replaceWith(`<input class="headline-inp"></input>`)
+    $('.headline-inp').val($(this).text())
+    $(".headline-inp").focus()
+  })
 
-$(document).on('blur', '.headline-inp', function() {
-  if (this.value === '') {
-    alert('Введите значение')
-  } else {
-  $(this).replaceWith(`<h5>${this.value}</h5>`)
-  cols.get(popUpName).forEach((item) =>{
-    if (thisCardId === item.id){
-    item.headline = this.value;
-    renderModal(item)
+  $(document).on('blur', '.headline-inp', function () {
+    if (this.value === '') {
+      alert('Введите значение')
+    } else {
+      $(this).replaceWith(`<h5>${this.value}</h5>`)
+      cols.get(popUpName).forEach((item) => {
+        if (thisCardId === item.id) {
+          item.headline = this.value;
+          renderModal(item)
+        }
+      })
     }
   })
-}
-})
 
-// Popup Comments
+  // Popup Comments
 
-$(document).on('keydown', '.comment-area', function enter(event) {
-  if (event.which === 13) {
-    cols.get(popUpName).forEach((item) =>{
-      if (thisCardId === item.id){
-      item.comments.push(this.value);
-      console.log(cols.get(popUpName))
-      renderModal(item)
-      $('.comment-area').focus()
-      }
-    })
-  }
-})
-
-// PopUp Delete Task
-
-$(document).on('click', '.deltask', function() {
-  let newArr = cols.get(popUpName).filter((item) => {
-    return item.id !== thisCardId;
+  $(document).on('keydown', '.comment-area', function enter(event) {
+    if (event.which === 13) {
+      cols.get(popUpName).forEach((item) => {
+        if (thisCardId === item.id) {
+          item.comments.push(this.value);
+          console.log(cols.get(popUpName))
+          renderModal(item)
+          $('.comment-area').focus()
+        }
+      })
+    }
   })
-  cols.set(popUpName,newArr);
-  render()
-})
+
+
+  // PopUp Delete Task
+
+  $(document).on('click', '.deltask', function () {
+    let newArr = cols.get(popUpName).filter((item) => {
+      return item.id !== thisCardId;
+    })
+    cols.set(popUpName, newArr);
+    render()
+  })
 
 });
