@@ -33,7 +33,8 @@ $(document).ready(() => {
               }
             })
 
-          }          
+          } 
+          render()         
         },
         receive:function(){
           keySecond = $(this).attr('id')
