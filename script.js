@@ -274,7 +274,9 @@ $(document).ready(() => {
   $(document).on('click', '.copy-cards', function () {
     $(".headline-col").css("visibility", "visible");
     $('.headline-col').focus();
-    copyItems = cols.get($(this).attr('id'));
+    copyItems = cols.get($(this).attr('id')).map(function(item){
+      return {...item,id: Math.random()}
+    })
   });
 
   // PopUp click
